@@ -1,0 +1,17 @@
+APP_NAME="Payment Requests API"
+APP_ENV=production
+APP_KEY=base64:sV/fzMaRRNuOKtgilMPP69wSio+vyEXHB73BTPmA9r4=
+APP_DEBUG=true
+APP_URL=http://testapi.bhcommerce.com.br
+
+DB_CONNECTION=mysql
+DB_HOST=127.0.0.1
+DB_PORT=3306
+DB_DATABASE=bhcomme1_test_api
+DB_USERNAME=bhcomme1_todas
+DB_PASSWORD=BHC2021todas
+
+SESSION_DRIVER=file
+CACHE_STORE=file
+
+EXCHANGE_RATE_API_KEY=ba0f7ae2e285c305b038a4fd
