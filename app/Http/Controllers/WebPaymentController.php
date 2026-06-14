@@ -17,9 +17,16 @@ class WebPaymentController extends Controller
             $query->where('status', $request->status);
         }
 
-        $payments = $query->latest()->paginate(15);
+        $payments = $query->latest()->paginate(15)->withQueryString();
+        $totalApprovedEur = PaymentRequest::where('status', 'approved')->sum('amount_eur');
+        $totals = [
+            'approved' => $totalApprovedEur,
+            'pending'  => PaymentRequest::where('status', 'pending')->sum('amount_eur'),
+            'rejected' => PaymentRequest::where('status', 'rejected')->sum('amount_eur'),
+            'expired'  => PaymentRequest::where('status', 'expired')->sum('amount_eur'),
+        ];
         $users = \App\Models\User::orderBy('name')->get();
-        return view('payment', compact('payments', 'users'));
+        return view('payment', compact('payments', 'totalApprovedEur', 'totals', 'users'));
     }
 
     public function store(Request $request, ExchangeRateService $exchangeRateService): JsonResponse

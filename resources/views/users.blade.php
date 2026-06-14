@@ -113,6 +113,10 @@
         </div>
     </main>
 
+    <footer class="text-center text-xs text-slate-400 pb-6">
+        &copy; {{ date('Y') }} - Powered by Henrique Marcandier Marques Gonçalves
+    </footer>
+
     @if (Auth::user()->role === 'finance')
     {{-- Add User Modal --}}
     <div id="addUserModal" class="fixed inset-0 z-50 hidden bg-black/40 flex items-center justify-center">

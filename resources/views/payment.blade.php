@@ -63,12 +63,53 @@
                     <a href="{{ url('/payment?status=pending') }}" class="px-3 py-1.5 text-xs font-semibold rounded-lg {{ request('status') === 'pending' ? 'bg-violet-600 text-white' : 'bg-slate-100 text-slate-600 hover:bg-slate-200' }} transition-colors">Pending</a>
                     <a href="{{ url('/payment?status=approved') }}" class="px-3 py-1.5 text-xs font-semibold rounded-lg {{ request('status') === 'approved' ? 'bg-violet-600 text-white' : 'bg-slate-100 text-slate-600 hover:bg-slate-200' }} transition-colors">Approved</a>
                     <a href="{{ url('/payment?status=rejected') }}" class="px-3 py-1.5 text-xs font-semibold rounded-lg {{ request('status') === 'rejected' ? 'bg-violet-600 text-white' : 'bg-slate-100 text-slate-600 hover:bg-slate-200' }} transition-colors">Rejected</a>
+                    <a href="{{ url('/payment?status=expired') }}" class="px-3 py-1.5 text-xs font-semibold rounded-lg {{ request('status') === 'expired' ? 'bg-violet-600 text-white' : 'bg-slate-100 text-slate-600 hover:bg-slate-200' }} transition-colors">Expired</a>
                 </div>
                 @if (Auth::user()->role === 'finance')
                     <button onclick="openAddPayment()" class="px-4 py-2 text-xs font-semibold rounded-lg bg-violet-600 text-white hover:bg-violet-700 transition-colors">+ Add Payment</button>
                 @endif
             </div>
         </div>
+
+        @php
+            $statusColors = [
+                'pending'  => ['bg' => 'bg-amber-50', 'border' => 'border-amber-200', 'text' => 'text-amber-700', 'value' => 'text-amber-800'],
+                'approved' => ['bg' => 'bg-emerald-50', 'border' => 'border-emerald-200', 'text' => 'text-emerald-700', 'value' => 'text-emerald-800'],
+                'rejected' => ['bg' => 'bg-red-50', 'border' => 'border-red-200', 'text' => 'text-red-700', 'value' => 'text-red-800'],
+                'expired'  => ['bg' => 'bg-slate-50', 'border' => 'border-slate-200', 'text' => 'text-slate-700', 'value' => 'text-slate-800'],
+            ];
+            $currentStatus = request('status');
+        @endphp
+
+        @if (!$currentStatus)
+            <div class="bg-emerald-50 border border-emerald-200 rounded-xl px-5 py-3 flex items-center justify-between">
+                <span class="text-sm font-semibold text-emerald-700">Total Approved</span>
+                <div class="flex items-center gap-3">
+                    <span class="text-lg font-bold text-emerald-800">&euro; {{ number_format($totalApprovedEur, 2, ',', '.') }}</span>
+                    <button onclick="toggleTotals()" class="text-emerald-600 hover:text-emerald-800 transition-colors text-xl font-bold leading-none" id="totalsToggle">+</button>
+                </div>
+            </div>
+            <div id="otherTotals" class="hidden grid grid-cols-3 gap-3">
+                <div class="bg-amber-50 border border-amber-200 rounded-xl px-4 py-2.5 flex items-center justify-between">
+                    <span class="text-xs font-semibold text-amber-700">Pending</span>
+                    <span class="text-sm font-bold text-amber-800">&euro; {{ number_format($totals['pending'], 2, ',', '.') }}</span>
+                </div>
+                <div class="bg-red-50 border border-red-200 rounded-xl px-4 py-2.5 flex items-center justify-between">
+                    <span class="text-xs font-semibold text-red-700">Rejected</span>
+                    <span class="text-sm font-bold text-red-800">&euro; {{ number_format($totals['rejected'], 2, ',', '.') }}</span>
+                </div>
+                <div class="bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 flex items-center justify-between">
+                    <span class="text-xs font-semibold text-slate-700">Expired</span>
+                    <span class="text-sm font-bold text-slate-800">&euro; {{ number_format($totals['expired'], 2, ',', '.') }}</span>
+                </div>
+            </div>
+        @else
+            @php $c = $statusColors[$currentStatus] ?? $statusColors['pending']; @endphp
+            <div class="{{ $c['bg'] }} border {{ $c['border'] }} rounded-xl px-5 py-3 flex items-center justify-between">
+                <span class="text-sm font-semibold {{ $c['text'] }}">Total {{ ucfirst($currentStatus) }}</span>
+                <span class="text-lg font-bold {{ $c['value'] }}">&euro; {{ number_format($totals[$currentStatus] ?? 0, 2, ',', '.') }}</span>
+            </div>
+        @endif
 
         <div class="bg-white rounded-2xl shadow-sm border border-slate-200/60 overflow-hidden">
             <table class="w-full">
@@ -139,6 +180,10 @@
             @endif
         </div>
     </main>
+
+    <footer class="text-center text-xs text-slate-400 pb-6">
+        &copy; {{ date('Y') }} - Powered by Henrique Marcandier Marques Gonçalves
+    </footer>
 
     @if (Auth::user()->role === 'finance')
     {{-- Add Payment Modal --}}
@@ -267,6 +312,18 @@
                 location.reload();
             } catch(e) { err.textContent = 'Network error'; err.classList.remove('hidden'); }
             finally { btn.disabled = false; btn.textContent = 'Delete'; }
+        }
+
+        function toggleTotals() {
+            const el = document.getElementById('otherTotals');
+            const btn = document.getElementById('totalsToggle');
+            if (el.classList.contains('hidden')) {
+                el.classList.remove('hidden');
+                btn.textContent = '−';
+            } else {
+                el.classList.add('hidden');
+                btn.textContent = '+';
+            }
         }
 
         document.addEventListener('keydown', function(e) {

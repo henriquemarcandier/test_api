@@ -10,7 +10,8 @@ class LoginWebController extends Controller
 {
     public function showLoginForm()
     {
-        return view('login');
+        $users = \App\Models\User::orderBy('name')->get();
+        return view('login', compact('users'));
     }
 
     public function login(Request $request)

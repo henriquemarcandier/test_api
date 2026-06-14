@@ -31,13 +31,13 @@
                 <div>
                     <label for="email" class="block text-sm font-semibold text-white/70 mb-2 tracking-wide">Email</label>
                     <input type="email" name="email" id="email" placeholder="your@email.com" required autofocus
-                        class="w-full px-4 py-3.5 bg-white/8 border border-white/10 rounded-xl text-white text-sm placeholder-white/30 outline-none transition-all duration-300 focus:border-violet-500 focus:bg-white/10 focus:ring-4 focus:ring-violet-500/15">
+                        class="w-full px-4 py-3.5 bg-slate-800/60 border border-white/10 rounded-xl text-white text-sm placeholder-white/30 outline-none transition-all duration-300 focus:border-violet-500 focus:bg-white/10 focus:ring-4 focus:ring-violet-500/15">
                 </div>
 
                 <div>
                     <label for="password" class="block text-sm font-semibold text-white/70 mb-2 tracking-wide">Password</label>
                     <input type="password" name="password" id="password" placeholder="••••••••" required
-                        class="w-full px-4 py-3.5 bg-white/8 border border-white/10 rounded-xl text-white text-sm placeholder-white/30 outline-none transition-all duration-300 focus:border-violet-500 focus:bg-white/10 focus:ring-4 focus:ring-violet-500/15">
+                        class="w-full px-4 py-3.5 bg-slate-800/60 border border-white/10 rounded-xl text-white text-sm placeholder-white/30 outline-none transition-all duration-300 focus:border-violet-500 focus:bg-white/10 focus:ring-4 focus:ring-violet-500/15">
                 </div>
 
                 <div class="flex items-center justify-between">
@@ -56,13 +56,9 @@
             <details class="mt-6 pt-6 border-t border-white/8">
                 <summary class="text-xs text-white/40 cursor-pointer text-center hover:text-white/60 transition-colors">Test users</summary>
                 <table class="w-full mt-4 text-xs text-white/50">
-                    <tr><td class="py-1.5">joao@empresa.com</td><td class="text-right">employee</td><td class="text-right">BRL</td></tr>
-                    <tr><td class="py-1.5">john@empresa.com</td><td class="text-right">employee</td><td class="text-right">USD</td></tr>
-                    <tr><td class="py-1.5">pierre@empresa.com</td><td class="text-right">employee</td><td class="text-right">EUR</td></tr>
-                    <tr><td class="py-1.5">akira@empresa.com</td><td class="text-right">employee</td><td class="text-right">JPY</td></tr>
-                    <tr><td class="py-1.5">carlos@empresa.com</td><td class="text-right">employee</td><td class="text-right">MXN</td></tr>
-                    <tr><td class="py-1.5">sarah@empresa.com</td><td class="text-right">employee</td><td class="text-right">GBP</td></tr>
-                    <tr><td class="py-1.5">finance@empresa.com</td><td class="text-right">finance</td><td class="text-right">EUR</td></tr>
+                    @foreach ($users as $u)
+                        <tr><td class="py-1">{{ $u->email }}</td><td class="text-right">{{ $u->role }}</td><td class="text-right">{{ $u->currency }}</td></tr>
+                    @endforeach
                     <tr><td colspan="3" class="text-center pt-3 text-white/30">Password: <strong class="text-white/50">password</strong></td></tr>
                 </table>
             </details>
