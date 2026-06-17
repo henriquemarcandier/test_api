@@ -10,7 +10,7 @@ Route::post('/login', [LoginWebController::class, 'login']);
 
 Route::middleware('auth')->group(function () {
     Route::get('/dashboard', [LoginWebController::class, 'dashboard']);
-    Route::get('/logout', [LoginWebController::class, 'logout']);
+    Route::match(['get', 'post'], '/logout', [LoginWebController::class, 'logout']);
     Route::post('/convert', [LoginWebController::class, 'convert']);
     Route::get('/users', [UsersController::class, 'index']);
     Route::post('/users', [UsersController::class, 'store'])->middleware('can:finance');

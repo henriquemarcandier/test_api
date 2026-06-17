@@ -255,7 +255,8 @@
             document.getElementById('addPaymentModal').classList.remove('hidden');
         }
 
-        document.getElementById('addPaymentForm').addEventListener('submit', async function(e) {
+        const addPaymentForm = document.getElementById('addPaymentForm');
+        if (addPaymentForm) addPaymentForm.addEventListener('submit', async function(e) {
             e.preventDefault();
             const btn = this.querySelector('button[type="submit"]');
             btn.disabled = true; btn.textContent = 'Creating...';

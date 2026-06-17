@@ -194,7 +194,8 @@
             document.getElementById('addUserModal').classList.remove('hidden');
         }
 
-        document.getElementById('addUserForm').addEventListener('submit', async function(e) {
+        const addUserForm = document.getElementById('addUserForm');
+        if (addUserForm) addUserForm.addEventListener('submit', async function(e) {
             e.preventDefault();
             const btn = this.querySelector('button[type="submit"]');
             btn.disabled = true; btn.textContent = 'Creating...';
